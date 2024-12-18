@@ -1,6 +1,5 @@
 const express = require("express")
 const UserPersistence = require("./persistence.js")
-const bodyParser = require("body-parser")
 const userPersistence = new UserPersistence("./database.json")
 
 const main = async () => {
@@ -8,7 +7,16 @@ const main = async () => {
         await userPersistence.load1()
         const app = express()
 
-       //app.use(bodyParser.json())
+        app.use((req,res,next)=>{
+            let body = ""
+            req.on("data",(chunk)=>{
+                body+=chunk
+            })
+            req.on("end",()=>{
+                req.body = body
+                next()
+            })
+        })
         // tout url sous le format suivant : /users , /users?..... , /users
         // les query param font partie du url
         app.get("/users", (req, res) => {
@@ -36,7 +44,6 @@ const main = async () => {
                 })
             }
         })
-        app.post("/users",bodyParser.json(),(req,res)=>{},(req,res)=>{})
         app.listen(3000, (err) => {
             if (err)
                 return console.err(err)
