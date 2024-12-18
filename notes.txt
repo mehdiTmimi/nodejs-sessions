@@ -4,6 +4,8 @@ notes:
 - npm i -D nodemon => pour installer le module nodemon (devdependencies)
 - ajouter le script "devStart" : nodemon index.js => npm run devStart => nodemon index.js
 
+NB: pensez toujours a executer la commande : npm i 
+=> il va telecharger et installer les differents modules exprimes dans le package.json
 - minimum code pour creer un serveur :
 const express = require("express")
 
@@ -27,5 +29,5 @@ app.listen(3000,(err)=>{
  - app.use(url,callback) // url est la condition . ex: app.use("/ok",callback) => le callback sera execute pour 
  tout url qui commence par /ok
 2- app.get||post||delete||put...(url,callback) // la condtion c est a la fois la method et le url
-
+NB : le url doit etre exactement egal a la condition
 NB: une fois on execute un callback d un middleware on peut pas passer au prochain middleware a moin que on appel le "next()"
