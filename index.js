@@ -1,6 +1,7 @@
 const express = require("express")
 const UserPersistence = require("./persistence.js")
 const bodyParser = require("body-parser")
+const User = require("./User.js")
 const userPersistence = new UserPersistence("./database.json")
 
 const main = async () => {
@@ -8,7 +9,7 @@ const main = async () => {
         await userPersistence.load1()
         const app = express()
 
-       //app.use(bodyParser.json())
+        //app.use(bodyParser.json())
         // tout url sous le format suivant : /users , /users?..... , /users
         // les query param font partie du url
         app.get("/users", (req, res) => {
@@ -36,7 +37,32 @@ const main = async () => {
                 })
             }
         })
-        app.post("/users",bodyParser.json(),(req,res)=>{},(req,res)=>{})
+        app.post("/users", bodyParser.json(),
+            (req, res, next) => {
+                let { id, name, city } = req.body
+                if (id && name && city)
+                    return next()
+                res.status(400)
+                res.json({
+                    message: "please fill all the required fields"
+                })
+            }, (req, res) => {
+                let { id, name, city } = req.body
+                let user = new User(id, name, city)
+                userPersistence.insert(user)
+                    .then(() => {
+                        res.status(201)
+                        res.json(user)
+                    })
+                    .catch(e => {
+                        console.error(e)
+                        res.status(400)
+                        res.json({
+                            message: "id already exist",
+                            id: req.body.id
+                        })
+                    })
+            })
         app.listen(3000, (err) => {
             if (err)
                 return console.err(err)
