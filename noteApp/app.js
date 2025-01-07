@@ -2,10 +2,25 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt")
 const fs = require("fs")
+const session = require("express-session")
 const PORT = 3000
 const bdPathUsers = "./database/user.json"
 const app = express()
+app.set('trust proxy', 1)
+app.use(session({
+    secret: "salut uemf",
+    name: "uemf"
+}))
 app.use(bodyParser.json())
+app.use((req, res, next) => {
+   
+    if (!req.session.counter)
+        req.session.counter = 1
+    else
+        req.session.counter++
+    console.log(req.session)
+    next()
+})
 app.use(express.static("./public"))
 app.post("/register", async (req, res) => {
     // extracter data depuis le body
