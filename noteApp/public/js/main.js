@@ -13,4 +13,17 @@ registerBtn.addEventListener("click",()=>{
             pwd: pwdInput.value
         })
     })
+    // then concerne toutes les reponses du serveur (200, 400, 500 ...)
+    .then(async response=>{
+        let body = await response.json()
+        if(response.status >= 200 && response.status <300)
+            alert("success")
+        else{
+            alert(body.msg)
+        }
+    })
+    .catch(e=>{
+        alert("problem")
+        console.log(e)
+    })
 })
