@@ -1,0 +1,29 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+header{
+    background: black;
+    color: white;
+}
+main{
+    display: flex;
+    margin-top: 20px;
+}
+main section{
+    flex: 1;
+}
+main table{
+    border-collapse: collapse;
+    width: 100%;
+}
+main table th,main table td{
+    border: 1px solid black;
+}
+main section:first-child{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
