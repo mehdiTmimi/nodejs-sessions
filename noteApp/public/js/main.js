@@ -17,7 +17,7 @@ registerBtn.addEventListener("click",()=>{
     .then(async response=>{
         let body = await response.json()
         if(response.status >= 200 && response.status <300)
-            alert("success")
+            window.location="http://localhost:3000/login.html"
         else{
             alert(body.msg)
         }

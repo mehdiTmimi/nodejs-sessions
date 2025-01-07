@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function load() {
+            let loginBtn = document.getElementById("loginBtn")
+            let pwdInput = document.getElementById("pwdInput")
+            let loginInput = document.getElementById("loginInput")
+            loginBtn.addEventListener("click", () => {
+                if (!loginInput.value || !pwdInput.value)
+                    return alert("......")
+                fetch("http://localhost:3000/login", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        login: loginInput.value,
+                        pwd: pwdInput.value
+                    })
+                    , headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(async response => {
+                    let body = await response.json()
+                    if (response.status >= 200 && response.status < 300)
+                        window.location = "http://localhost:3000/index.html"
+                    else {
+                        alert(body.msg)
+                    }
+                })
+                    .catch(e => {
+                        alert("problem")
+                        console.log(e)
+                    })
+
+
+            })
+
+        }
+    </script>
+</head>
+
+<body onload="load()">
+    <input id="loginInput" type="text" placeholder="login">
+    <input id="pwdInput" type="password" placeholder="pwd">
+    <button id="loginBtn">login</button>
+</body>
+
+</html>

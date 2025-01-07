@@ -10,7 +10,12 @@ app.use(express.static("./public"))
 app.post("/register", async (req, res) => {
     // extracter data depuis le body
     const { login, pwd } = req.body
-
+    if (!login || !pwd) {
+        res.status(400)
+        return res.json({
+            msg: "login and pwd are required!!!!!!!"
+        })
+    }
     // lire le fichier et le convertir en objet
     let data = await fs.promises.readFile(bdPathUsers)
         .then(data => JSON.parse(data))
@@ -28,13 +33,13 @@ app.post("/register", async (req, res) => {
                     login, hash
                 }
                 data.users.push(newUser)
-                fs.promises.writeFile(bdPathUsers,JSON.stringify(data,null,3))
-                .then(()=>{
-                    res.status(201)
-                    res.json({
-                        msg: "user successefully added"
+                fs.promises.writeFile(bdPathUsers, JSON.stringify(data, null, 3))
+                    .then(() => {
+                        res.status(201)
+                        res.json({
+                            msg: "user successefully added"
+                        })
                     })
-                })
             })
     }
     else {
@@ -45,10 +50,42 @@ app.post("/register", async (req, res) => {
         })
     }
 })
-   
+app.post("/login", async (req, res) => {
+    // verifier les donnees
+    const { login, pwd } = req.body
+    if (!login || !pwd) {
+        res.status(400)
+        return res.json({
+            msg: "login and pwd are required!"
+        })
+    }
+    let data = await fs.promises.readFile(bdPathUsers)
+        .then(data => JSON.parse(data))
+    // rechercher le user par login
+    let resultat = data.users.find(ele => ele.login == login)
+    if (!resultat) {
+        res.status(400)
+        return res.json({
+            msg: "invalid credentiels"
+        })
+    }
+    if (await bcrypt.compare(pwd, resultat.hash) == true) {
+        res.status(200)
+        return res.json({
+            msg: "successful login"
+        })
+    }
+    else {
+        res.status(400)
+        return res.json({
+            msg: "invalid credentiels"
+        })
+    }
 
-   
- 
+})
+
+
+
 
 app.listen(PORT, (err) => {
     if (err)
