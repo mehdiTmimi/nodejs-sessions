@@ -18,7 +18,36 @@ app.post("/login", loginCallback)
 app.use(express.static("./public"))
 app.use(isAuthenticated)
 app.use(express.static("./private"))
-
+app.post("/logout",(req,res)=>{
+    req.session.destroy()
+    res.json({msg:"logged out successfully"})
+})
+app.delete("/notes/:id",async (req,res)=>{
+    let {id} = req.params
+    let data = JSON.parse(await fs.promises.readFile(bdPathNotes))
+    let notes = data.notes
+    let note = notes.find(ele => ele.id == id)
+    if (!note) {
+        res.status(400)
+        return res.json({
+            msg: "id does not exist"
+        })
+    }
+    if(note.idUser != req.session.login)
+        {
+            res.status(403)
+            return res.json({
+                msg: "it s not your note"
+            })
+        }
+    notes = notes.filter(ele => ele.id != id)
+    notes = {
+        "notes" : notes
+    }
+    await fs.promises.writeFile(bdPathNotes, JSON.stringify(notes,null,3))
+    res.status(200)
+    res.json({"msg":"ressource deleted"})
+})
 app.get("/notes", async (req, res) => {
     let data = JSON.parse(await fs.promises.readFile(bdPathNotes))
     let notes = data.notes
