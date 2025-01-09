@@ -27,6 +27,14 @@
       {
          "login": "ok",
          "hash": "$2b$10$97cudJx9JbCenJS48rvMK.eBWeDIV/6jXdPRLbC7KdcDGrp/InfUW"
+      },
+      {
+         "login": "ok1",
+         "hash": "$2b$10$9lOrB58V8FM.oVKpQys5WeHRieGONIbtvLyUqGe0xF0V8pq9dH9mq"
+      },
+      {
+         "login": "ok11",
+         "hash": "$2b$10$8.6I2N3cIkD3/g2w4f5EoegUAzHtotF4fq8S4vPee47NtxHeJ6V1G"
       }
    ]
 }

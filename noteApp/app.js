@@ -6,22 +6,12 @@ const session = require("express-session")
 const PORT = 3000
 const bdPathUsers = "./database/user.json"
 const app = express()
-app.set('trust proxy', 1)
-app.use(session({
-    secret: "salut uemf",
-    name: "uemf"
-}))
+// localhost:3000/ok
+// localhost:3000/ok2
+// localhost:3000/ok/20
+//app.use("/ok",session({ secret: "salut uemf", name: "uemf"}))
+app.use(session({ secret: "salut uemf", name: "uemf"}))
 app.use(bodyParser.json())
-app.use((req, res, next) => {
-   
-    if (!req.session.counter)
-        req.session.counter = 1
-    else
-        req.session.counter++
-    console.log(req.session)
-    next()
-})
-app.use(express.static("./public"))
 app.post("/register", async (req, res) => {
     // extracter data depuis le body
     const { login, pwd } = req.body
@@ -86,6 +76,7 @@ app.post("/login", async (req, res) => {
     }
     if (await bcrypt.compare(pwd, resultat.hash) == true) {
         res.status(200)
+        req.session.isConnected = true
         return res.json({
             msg: "successful login"
         })
@@ -98,6 +89,19 @@ app.post("/login", async (req, res) => {
     }
 
 })
+
+app.use(express.static("./public"))
+app.use((req,res,next)=>{
+   if(req.session.isConnected)
+        next()
+    else{
+        res.status(401)
+        res.json({
+            msg:"you need to login first"
+        })
+    }
+},express.static("./private"))
+
 
 
 
