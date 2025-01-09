@@ -1,3 +1,19 @@
 {
-    "notes":[]
+   "notes": [
+      {
+         "id": 1,
+         "value": "visit doctor",
+         "idUser": "ok"
+      },
+      {
+         "id": 2,
+         "value": "visit doctor",
+         "idUser": "ok"
+      },
+      {
+         "id": 3,
+         "value": "visit supermarket",
+         "idUser": "ok1"
+      }
+   ]
 }

@@ -1,3 +1,6 @@
+const fs = require("fs")
+const bdPathUsers = "./database/user.json"
+const bcrypt = require("bcrypt")
 const registerCallback  = async (req, res) => {
     // extracter data depuis le body
     const { login, pwd } = req.body
@@ -63,6 +66,7 @@ const loginCallback = async (req, res) => {
     if (await bcrypt.compare(pwd, resultat.hash) == true) {
         res.status(200)
         req.session.isConnected = true
+        req.session.login = login
         return res.json({
             msg: "successful login"
         })
