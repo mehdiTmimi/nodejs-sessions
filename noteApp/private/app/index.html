@@ -5,15 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/main.css">
+    <script src="js/main.js" defer></script>
 </head>
 <body>
+    <div id="loadingDiv" class="hidden">
+        Loading ............
+    </div>
     <header>
         <h1>Note App</h1>
     </header>
     <main>
         <section>
-            <textarea name="" id="" placeholder="Note"></textarea>
-            <button>
+            <input type="text" placeholder="id" id="idInput">
+            <textarea name="" id="valueInput" placeholder="Note"></textarea>
+            <button id="saveBtn">
                 save
             </button>
         </section>
@@ -29,7 +34,7 @@
                         <th>options</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody">
 
                 </tbody>
             </table>

@@ -17,7 +17,7 @@ app.post("/login", loginCallback)
 
 app.use(express.static("./public"))
 app.use(isAuthenticated)
-app.use(express.static("./private"))
+app.use("/app",express.static("./private"))
 app.post("/logout",(req,res)=>{
     req.session.destroy()
     res.json({msg:"logged out successfully"})

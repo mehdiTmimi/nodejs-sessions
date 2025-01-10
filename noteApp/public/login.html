@@ -25,7 +25,7 @@
                 }).then(async response => {
                     let body = await response.json()
                     if (response.status >= 200 && response.status < 300)
-                        window.location = "http://localhost:3000/index.html"
+                        window.location = "http://localhost:3000/app/index.html"
                     else {
                         alert(body.msg)
                     }
