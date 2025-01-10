@@ -1,0 +1,9 @@
+- verification cote serveur est obligatoire ! (meme si vous avez deja
+realise la configuration cote client)
+- eviter le innerHTML ou les attributs qui peuvent declenche l execution du js
+=> innerText ou utiliser DOMpurify alike (XSS attack)
+- pour les cookies de session specifier que httpOnly = true
+- secure : true => la cookie sera envoyee seulement si https
+=> la fail : si on met  secure = false et l utilisateur par accident il a utiliser
+le http pour acceder a votre site. la cookie sera envoye sans cryptage
+=> vous etes vulnerable a "A man-in-the-middle [a] (MITM) attack"

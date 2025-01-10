@@ -1,5 +1,6 @@
 const express = require("express")
 const bodyParser = require("body-parser")
+const cors = require("cors")
 
 const fs = require("fs")
 const session = require("express-session")
@@ -9,9 +10,13 @@ const PORT = 3000
 const bdPathNotes = "./database/note.json"
 const app = express()
 
-app.use(session({ secret: "salut uemf", name: "uemf" }))
+app.use(session({ secret: "salut uemf", name: "uemf"
+    , cookie : {
+        sameSite:"none"
+    }
+}))
 app.use(bodyParser.json())
-
+app.use(cors())
 app.post("/register", registerCallback)
 app.post("/login", loginCallback)
 

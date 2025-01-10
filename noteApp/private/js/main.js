@@ -1,4 +1,39 @@
 const urlRestApi = "http://localhost:3000/notes"
+saveBtn.addEventListener("click", async () => {
+    // verification des donnees
+    const id = idInput.value
+    const value = valueInput.value
+    if (!id || !value)
+        return alert("tous les champs sont obligatoires")
+
+    loadingDiv.classList.remove("hidden")
+    const newNote = {
+        id, value
+    }
+    try {
+        const response = await fetch(urlRestApi, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newNote)
+        })
+        if (response.status >= 200 && response.status < 300) {
+            addNoteToTable(newNote)
+            idInput.value = ""
+            valueInput.value = ""
+        }
+        else {
+            let body = await response.json()
+            alert(body.msg)
+        }
+    }
+    catch (e) {
+        console.error(e)
+        alert("error")
+    }
+    loadingDiv.classList.add("hidden")
+})
 const loadData = () => {
     // affichez un loading
     loadingDiv.classList.remove("hidden")
@@ -35,29 +70,28 @@ const addNoteToTable = note => {
     tbody.appendChild(ligne)
 
     td1.textContent = note.id
-    td2.textContent = note.value
+    td2.innerHTML = note.value
     button.textContent = "delete"
     button.addEventListener("click", () => {
-        if(!confirm("voulez vous vraiment supprimer la note ?"))
+        if (!confirm("voulez vous vraiment supprimer la note ?"))
             return
         loadingDiv.classList.remove("hidden")
         fetch("http://localhost:3000/notes/" + note.id, {
             method: "DELETE"
         }).then(async response => {
-            if(response.status==200)
-            {
+            if (response.status == 200) {
                 ligne.remove()
             }
-            else{
+            else {
                 let body = await response.json()
                 alert(body.msg)
             }
         })
-        .catch(e => {
-            console.error(e)
-            alert("erreur")
-        })
-        .finally(() => loadingDiv.classList.add("hidden"))
+            .catch(e => {
+                console.error(e)
+                alert("erreur")
+            })
+            .finally(() => loadingDiv.classList.add("hidden"))
 
     })
 }
