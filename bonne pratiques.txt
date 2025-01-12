@@ -6,4 +6,4 @@ realise la configuration cote client)
 - secure : true => la cookie sera envoyee seulement si https
 => la fail : si on met  secure = false et l utilisateur par accident il a utiliser
 le http pour acceder a votre site. la cookie sera envoye sans cryptage
-=> vous etes vulnerable a "A man-in-the-middle [a] (MITM) attack"
+=> vous etes vulnerables a "A man-in-the-middle [a] (MITM) attack"
